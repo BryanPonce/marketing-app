@@ -3,6 +3,9 @@
 
 # importo las librerias necesarias para poder trabajar mi dataframe
 
+pip install plotly-express
+pip install streamlit
+
 import pandas as pd
 import numpy as np 
 import plotly.express as px #---- pip install plotly-express
