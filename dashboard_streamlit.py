@@ -13,8 +13,9 @@ import streamlit as st #---- pip install streamlit
 # **para mostrar el streamlit en el navegador: streamlit run dashboard_streamlit.py **
 
 # importo los datos que usare en mi aplicacion de visualizacion
- 
-df = pd.read_csv(r'C:\Users\bryan\Downloads\Data Science Project\dataset_mkt_29_08.csv', encoding='ISO-8859-1')
+
+url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_29_08.csv'
+df =  pd.read_csv(url, encoding='ISO-8859-1')
 
 # quito los espacios en los nombres de las columnas porque entra en conflicto con los
 # filtros de Streamlit
