@@ -350,3 +350,7 @@ def show_analyze_marketing():
 
     left_column.plotly_chart(leads_vs_cpl, use_container_width=True)
     right_column.plotly_chart(alumns_vs_cac, use_container_width=True)
+    
+    # new markdown------------------------------------------------
+
+    st.markdown('---')
