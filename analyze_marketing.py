@@ -23,8 +23,8 @@ df1=df[df['paid']==1]
 
 # create a pivot table to find new metrics in dataset
 
-df1= pd.pivot_table(data=df1,index=['inicio_del_informe','batch','plataforma_ad','escuela',
-                'desglose_de_fuente_original_2','paid'
+df1= pd.pivot_table(data=df1,index=['paid','fuente_original','inicio_del_informe','batch','plataforma_ad','escuela',
+                'desglose_de_fuente_original_2'
                 ],
                 values=['importe_gastado','leads','clics','leads_hubspot','registro_eb',
                 'asistio','ensayo','inscrito','ventas'
@@ -133,7 +133,7 @@ def show_analyze_marketing():
 
     st.markdown('---')
 
-    # alumns per platform -----------------------------------
+    # alumns per platform -----------------------------------------------------------
 
     alumns_x_platform= (
         df_select.groupby(by=['plataforma_ad']).sum()[['inscrito']].sort_values(by='inscrito')     
@@ -154,7 +154,7 @@ def show_analyze_marketing():
         xaxis=(dict(showgrid=False))
     )
 
-    # funnel vs cost ----------------------------------------------------------------
+    # results vs cost ----------------------------------------------------------------
 
     # create a pivot table for the paid steps on the funnel
 
@@ -244,7 +244,7 @@ def show_analyze_marketing():
     )
 
     # two new columns to display these graphs:
-    # sales per batch & cac vs alumns
+    # alumns per platform & results vs cost per stage
 
     left_column, right_column= st.columns(2)
 
@@ -254,3 +254,101 @@ def show_analyze_marketing():
     right_column.plotly_chart(funnel_vs_cost, use_container_width=True)
 
     st.markdown('---')
+
+    # get data leads vs cpl per batch
+
+    batch_cpl= pd.pivot_table(data=df_select, index=['batch'],     
+                    values=['leads','importe_gastado'],
+                    aggfunc={'leads':np.sum,'importe_gastado':np.sum},
+                    fill_value=0
+    )
+    batch_cpl['cpl']= round(batch_cpl['importe_gastado'] / batch_cpl['leads'],2)
+
+    # now create the visualization ------------------------------ 
+
+    leads_vs_cpl = make_subplots(specs=[[{'secondary_y':True}]])
+
+    leads_vs_cpl.add_trace(
+        go.Scatter(
+            x= batch_cpl.index,
+            y= batch_cpl['cpl'],
+            name= 'Cost per Lead'),
+            secondary_y=True
+    )
+    leads_vs_cpl.add_trace(
+        go.Bar(
+            x= batch_cpl.index,
+            y= batch_cpl['leads'],
+            name= 'Leads per Batch'),
+            secondary_y= False
+    )
+    leads_vs_cpl.update_layout(
+        title='<b>Leads vs CPL per Batch</b>',
+        xaxis_title='Batch',
+        yaxis_title='Leads vs CPL',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=(dict(showgrid=False)),
+    )
+    leads_vs_cpl.update_yaxes(
+        title_text='Cost per Lead',
+        secondary_y=True
+    )    
+    leads_vs_cpl.update_yaxes(
+        title_text='Leads per Batch',
+        secondary_y=False
+    )
+
+    # get data alumns vs cac per batch
+
+    batch_cac= pd.pivot_table(data=df_select, index=['batch'],     
+                    values=['inscrito','importe_gastado'],
+                    aggfunc={'inscrito':np.sum,'importe_gastado':np.sum},
+                    fill_value=0
+    )
+    batch_cac['cac']= round(batch_cac['importe_gastado'] / batch_cac['inscrito'],2)
+
+    # now create the visualization ------------------------------ 
+
+    alumns_vs_cac = make_subplots(specs=[[{'secondary_y':True}]])
+
+    alumns_vs_cac.add_trace(
+        go.Scatter(
+            x= batch_cac.index,
+            y= batch_cac['cac'],
+            name= 'CAC'),
+            secondary_y=True
+    )
+    alumns_vs_cac.add_trace(
+        go.Bar(
+            x= batch_cac.index,
+            y= batch_cac['inscrito'],
+            name= 'Alumns per Batch'),
+            secondary_y= False
+    )
+    alumns_vs_cac.update_layout(
+        title='<b>Alumns vs CAC per Batch</b>',
+        xaxis_title='Batch',
+        yaxis_title='Alumns vs CAC',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=(dict(showgrid=False)),
+    )
+    alumns_vs_cac.update_yaxes(
+        title_text='CAC',
+        secondary_y=True
+    )    
+    alumns_vs_cac.update_yaxes(
+        title_text='Alumns per Batch',
+        secondary_y=False
+    )
+
+    # two new columns to display these graphs:
+    # leads vs cpl & alumns vs cac
+
+    left_column, right_column= st.columns(2)
+
+    # choosing where my plots will be displayed
+
+    left_column.plotly_chart(leads_vs_cpl, use_container_width=True)
+    right_column.plotly_chart(alumns_vs_cac, use_container_width=True)
+    
+    
