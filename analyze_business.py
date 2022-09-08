@@ -121,11 +121,11 @@ def show_analyze_business():
     # order data for streamlit kpi section display
 
     with left_column:
-        st.subheader(f'Ventas Totales: $ {ventas_totales:,} MXN')
-        st.subheader(f'Inversion: $ {inv_total:,} MXN')   
+        st.subheader(f'Total Sales: $ {ventas_totales:,} MXN')
+        st.subheader(f'Investment: $ {inv_total:,} MXN')   
         st.subheader(f'ROAS: {roas_total}')
     with right_column:
-        st.subheader(f'Alumnos: {ins_total:,}')
+        st.subheader(f'Alumns: {ins_total:,}')
         st.subheader(f'CAC: $ {cac_total:,} MXN')
         st.subheader(f'CVR: {cvr_total} %')
     
@@ -151,29 +151,29 @@ def show_analyze_business():
         go.Scatter(
             x=ins_b_cac.index,
             y=ins_b_cac['cac'],
-            name= 'CAC x Batch'),
+            name= 'CAC by Batch'),
             secondary_y=True
     )
     fig_ins_cac.add_trace(
         go.Bar(
             x=ins_b_cac.index,
             y=ins_b_cac['inscrito'],
-            name= 'Inscritos x Batch'),
+            name= 'Alumns per Batch'),
             secondary_y= False
     )
     fig_ins_cac.update_layout(
-        title='<b>Inscritos vs CAC</b>',
+        title='<b>Alumns vs CAC</b>',
         xaxis_title='Batch',
-        yaxis_title='Inscritos / CAC',
+        yaxis_title='Alumns / CAC',
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=(dict(showgrid=False)),
     )
     fig_ins_cac.update_yaxes(
-        title_text='CAC x Batch',
+        title_text='CAC by Batch',
         secondary_y=True
     )    
     fig_ins_cac.update_yaxes(
-        title_text='Inscritos x Batch',
+        title_text='Alumns per Batch',
         secondary_y=False
     )
     # sales per batch graph
@@ -187,7 +187,7 @@ def show_analyze_business():
         y= 'ventas',
         x= ventas_x_batch.index,
         orientation='v',
-        title= '<b>Ventas por Batch</b>',
+        title= '<b>Sales per Batch</b>',
         color_discrete_sequence= ['#0083B8']*len(ventas_x_batch),
         template= 'plotly_white'
     )
@@ -229,7 +229,7 @@ def show_analyze_business():
         go.Scatter(
             x=inv_v_roas.index,
             y=inv_v_roas['roas'],
-            name= 'ROAS x Batch'
+            name= 'ROAS by Batch'
             ),
             secondary_y= True,
     )
@@ -237,23 +237,23 @@ def show_analyze_business():
         go.Bar(
             x=inv_v_roas.index,
             y=inv_v_roas['importe_gastado'],
-            name= 'Inversion x Batch'
+            name= 'Investment by Batch'
             ),
             secondary_y= False,
     )
 
     fig_inv_roas.update_layout(
-        title='<b>Inversion vs ROAS</b>',
+        title='<b>Investment vs ROAS</b>',
         xaxis_title='Batch',
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=(dict(showgrid=False)),
     )
     fig_inv_roas.update_yaxes(
-        title_text='ROAS x batch',
+        title_text='ROAS by batch',
         secondary_y=True,
     )
     fig_inv_roas.update_yaxes(
-        title_text='Inversion x batch',
+        title_text='Investment by batch',
         secondary_y=False,
     )
 
