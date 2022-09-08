@@ -90,7 +90,7 @@ def show_analyze_marketing():
 
     # select for streamlit the filtered dataset
 
-    st.dataframe(df_select)
+    #st.dataframe(df_select)
 
     # -------- streamlit page name --------
 
