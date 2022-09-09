@@ -176,6 +176,21 @@ def show_analyze_business():
         title_text='Alumns per Batch',
         secondary_y=False
     )
+    fig_ins_cac.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y2', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=True
+    )
+    fig_ins_cac.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=False
+    )
+
     # sales per batch graph
 
     ventas_x_batch= (
@@ -255,6 +270,20 @@ def show_analyze_business():
     fig_inv_roas.update_yaxes(
         title_text='Investment by batch',
         secondary_y=False,
+    )
+    fig_inv_roas.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y2', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=True
+    )
+    fig_inv_roas.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=False
     )
 
     # conversion funnel graph --------------------------------------------------
