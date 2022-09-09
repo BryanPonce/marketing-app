@@ -9,7 +9,7 @@ def show_about_page():
     
     st.write('My name is [Bryan Ponce](https://www.linkedin.com/in/bryan-fernando-ponce/) and I present to you the Dashboard for Business and Marketing Analysis + Marketing Prediction Web App.')
     
-    st.write('I decided to develop this application with the goal to automate metric analysis for decision making and a prediction page where you can see allocation suggestions that could be helpful for you to maximize your marketing results.')   
+    st.write('I decided to develop this application with the goal of automating metric analysis for decision making and a prediction page where you can see allocation suggestions that could be helpful for you to maximize your marketing results.')   
     
     st.write("""### Original Data""")
     st.write('* This project started with a spreadsheet that gathers a year of information from different platforms, such as Facebook Ads, Google Ads, Hubspot and more with more than 45k observations.')
