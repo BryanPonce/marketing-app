@@ -4,7 +4,7 @@
 import streamlit as st
 from analyze_business import show_analyze_business
 from analyze_marketing import show_analyze_marketing
-#from about_page import show_about_page
+from about_page import show_about_page
 #from predict_page import show_predict
 
 # ------ streamlit configuration --------
@@ -23,9 +23,9 @@ page = st.sidebar.selectbox('What do you want to see?',
     'Predict Marketing'
     )
 )
-#if page == 'About the Project':
-    #show_about_page()
-if page == 'Analyze Business':
+if page == 'About the Project':
+    show_about_page()
+elif page == 'Analyze Business':
     show_analyze_business()
 elif page == 'Analyze Marketing':
     show_analyze_marketing() 
