@@ -242,6 +242,20 @@ def show_analyze_marketing():
         title_text='Results per Stage',
         secondary_y=False
     )
+    funnel_vs_cost.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y2', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=True
+    )
+    funnel_vs_cost.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=False
+    )
 
     # two new columns to display these graphs:
     # alumns per platform & results vs cost per stage
@@ -297,6 +311,20 @@ def show_analyze_marketing():
         title_text='Leads per Batch',
         secondary_y=False
     )
+    leads_vs_cpl.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y2', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=True
+    )
+    leads_vs_cpl.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=False
+    )    
 
     # get data alumns vs cac per batch
 
@@ -340,6 +368,20 @@ def show_analyze_marketing():
         title_text='Alumns per Batch',
         secondary_y=False
     )
+    alumns_vs_cac.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y2', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=True
+    )
+    alumns_vs_cac.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=False
+    )  
 
     # two new columns to display these graphs:
     # leads vs cpl & alumns vs cac
@@ -350,7 +392,7 @@ def show_analyze_marketing():
 
     left_column.plotly_chart(leads_vs_cpl, use_container_width=True)
     right_column.plotly_chart(alumns_vs_cac, use_container_width=True)
-    
+
     # new markdown------------------------------------------------
 
     st.markdown('---')
