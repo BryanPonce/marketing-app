@@ -13,7 +13,7 @@ def show_about_page():
     
     st.write("""### Original Data""")
     st.write('* This project started with a spreadsheet that gathers a year of information from different platforms, such as Facebook Ads, Google Ads, Hubspot and more with more than 45k observations. This Dataset was used to create visualizations in Marketing and Business analysis pages.')
-    st.write('* After crossing information using a pivot table, the number of observations reduced to 5,444, which is the Dataset I will be using for my modeling.')
+    st.write('* After crossing information using a pivot table, the number of observations reduced to 1,870, which is the Dataset I will be using for my modeling.')
     st.write('* Most important feature for calculating assistants was the number of Eventbrite registrations with 0.9 Pearson Correlation Score.')
     #st.write("* 9 regression models were used for this project being XGBoost Regressor the model with best performance on test data with 0.77 R2 score, which is the model that we can use in the Predict page.")
     #st.write("* The plots shown on the Explore page are made with outliers except the Price for location plot.")
