@@ -1,10 +1,11 @@
+
 # **to display streamlit: streamlit run app.py **
 
 import streamlit as st
 from analyze_business import show_analyze_business
 from analyze_marketing import show_analyze_marketing
 from about_page import show_about_page
-#from predict_page import show_predict
+from predict_page import show_predict_page
 
 # ------ streamlit configuration --------
 
@@ -28,5 +29,5 @@ elif page == 'Analyze Business':
     show_analyze_business()
 elif page == 'Analyze Marketing':
     show_analyze_marketing() 
-#else:
-    #show_predict_page()
+else:
+    show_predict_page()
