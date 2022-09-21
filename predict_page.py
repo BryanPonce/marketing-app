@@ -77,6 +77,7 @@ def show_predict_page():
     st.title("Marketing Investment Predictor")
     
     st.write("""### Find out how much we need to invest to get the desired results!""")
+    st.write(f'You can find Data from the last cycle of campaigns, this to help you understand what can we expect in the next cycle (batch) and where we can optimize our funel steps.')
     #image = Image.open('Zona_Rio_Tijuana.jpg')
     #st.image(image, caption = 'Zona Rio is one of the most popular areas of Tijuana')
 
