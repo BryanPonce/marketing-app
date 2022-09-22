@@ -5,6 +5,16 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
+# import trained model ------------------------------------------------
+
+def load_model():
+    with open('saved_steps.pkl', 'rb') as file:
+        data = pickle.load(file)
+    return data
+data = load_model()
+
+regressor = data["model"]
+
 # import metrics data
 
 url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_19_09.csv'
@@ -40,16 +50,6 @@ df1=df1[df1['batch']==last_batch]
 
 df1.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
 
-# import trained model ------------------------------------------------
-
-def load_model():
-    with open('saved_steps.pkl', 'rb') as file:
-        data = pickle.load(file)
-    return data
-data = load_model()
-
-regressor = data["model"]
-
 def show_predict_page():
 
     # ------- sidebar --------
@@ -77,7 +77,8 @@ def show_predict_page():
     st.title("Marketing Investment Predictor")
     
     st.write("""### Find out how much we need to invest to get the desired results!""")
-    st.write(f'You can find Data from the last cycle of campaigns, this to help you understand what can we expect in the next cycle (batch) and where we can optimize our funel steps.')
+    st.write(f'Tip: Filter the channel and the school you are advertising and receive dynamic insights based on the last batch.')
+    st.write(f'Depending on your forecasted metrics and the selected filters on the sidebar, the predicted numbers for each customer funnel stage will change')
     #image = Image.open('Zona_Rio_Tijuana.jpg')
     #st.image(image, caption = 'Zona Rio is one of the most popular areas of Tijuana')
 
@@ -90,9 +91,9 @@ def show_predict_page():
     # first, let's find out our assistants objective
 
     st.subheader(f'How many assistants do we need?')
-    assistants = st.slider("Assistants:", 100,800, step= 25)
+    asistio = st.slider("Assistants:", 100,800, step= 25)
     
-    ass_leads_rate= int(assistants/lead_ass_rate)
+    ass_leads_rate= int(asistio/lead_ass_rate)
 
     st.write(f'Your Campaign lead to assistant rate in the last batch was {lead_ass_rate*100}%. Recommendation: Always consider an improvement for this new cycle.')
     st.write(f'With this assitants and your Campaign lead to assistant rate in the last batch, you will get around {ass_leads_rate:,} leads.')
@@ -110,27 +111,57 @@ def show_predict_page():
     # how many leads we want to get in hubspot
 
     st.subheader(f'How many leads in Hubspot are we expecting?')
-    leads_hb = st.slider("Hubspot Leads:", 250,5000, step= 50)
+    leads_hubspot = st.slider("Hubspot Leads:", 250,5000, step= 50)
 
-    exp_alumns= int(leads_hb*hb_cvr)
+    exp_alumns= int(leads_hubspot*hb_cvr)
 
     st.write(f'In the last batch, the conversion rate of Hubspot leads was {hb_cvr*100}%. Recommendation: Always consider an improvement for this new cycle.')
     st.write(f'With this Hubspot leads and your conversion rate in the last batch, you will get around {exp_alumns:,} new alumns.')
 
-    st.subheader(f'Which school are we advertising? (select one)')
-    st.write(f'Selected School = 1 Not Selected = 0')
-    sch_cod = st.slider("Coding:", 0,1)
-    sch_dat = st.slider("Data:",  0,1)
-    sch_mkt = st.slider("Marketing:",  0,1)
-    sch_ux = st.slider("UX/UI:",  0,1)
-    sch_unk= 0
+    #st.subheader(f'Which school are we advertising? (select one)')
+    #st.write(f'Selected School = 1 Not Selected = 0')
+    #school_is_coding = st.slider("Coding:", 0,1)
+    #school_is_data = st.slider("Data:",  0,1)
+    #school_is_marketing = st.slider("Marketing:",  0,1)
+    #school_is_ux = st.slider("UX/UI:",  0,1)
+    #school_is_unknown = 0
 
-    st.subheader(f'Which platform are we advertising on? (select one)')
-    st.write(f'Selected Platform = 1 Not Selected = 0')
-    plat_fb = st.slider("Facebook:", 0,1)
-    plat_gads = st.slider("Google:",  0,1)
-    plat_in = st.slider("Linked In:",  0,1)
-    plat_tt = st.slider("Tik Tok:",  0,1)
+    escuela_cat = st.selectbox('Which school are we advertising? (select one)', 
+    ('Coding',
+     'Data', 
+     'UX/UI', 
+     'Marketing'
+    ))
+    if escuela_cat == 'Coding':
+        escuela_cat = 0
+    elif escuela_cat == 'Data':
+        escuela_cat = 1
+    elif escuela_cat == 'UX/UI':
+        escuela_cat =4 
+    elif escuela_cat == 'Marketing':
+        escuela_cat =2
+
+    #st.subheader(f'Which platform are we advertising on? (select one)')
+    #st.write(f'Selected Platform = 1 Not Selected = 0')
+    #platform_is_facebook_ads = st.slider("Facebook:", 0,1)
+    #platform_is_google_ads = st.slider("Google:",  0,1)
+    #platform_is_linkedin_ads = st.slider("Linked In:",  0,1)
+    #platform_is_tiktok_ads = st.slider("Tik Tok:",  0,1)
+
+    plataforma_ad_cat = st.selectbox('Which platform are we advertising on? (select one)', 
+    ('Facebook',
+     'Google', 
+     'Linked In', 
+     'Tik Tok'
+    ))
+    if plataforma_ad_cat == 'Facebook':
+        plataforma_ad_cat = 0
+    elif plataforma_ad_cat == 'Google':
+        plataforma_ad_cat = 1
+    elif plataforma_ad_cat == 'Linked In':
+        plataforma_ad_cat = 2 
+    elif plataforma_ad_cat == 'Tik Tok':
+        plataforma_ad_cat = 3
 
     ok = st.button("Calculate my investment suggestion")
     if ok:
@@ -140,14 +171,32 @@ def show_predict_page():
         #          'school_is_ux','platform_is_facebook_ads', 'platform_is_google_ads',
         #          'platform_is_linkedin_ads', 'platform_is_tiktok_ads'
 
-        x = np.array([[assistants,leads,leads_hb, sch_cod, sch_dat, 
-                      sch_mkt,sch_ux,sch_unk,plat_fb,plat_gads,plat_in,
-                      plat_tt
+        #x = np.array([[asistio,leads,leads_hubspot, 
+        #              school_is_coding, school_is_data, 
+        #              school_is_marketing,school_is_unknown,
+        #              school_is_ux,
+        #              platform_is_facebook_ads,platform_is_google_ads,
+        #              platform_is_linkedin_ads,platform_is_tiktok_ads
+        #              ]])
+
+        # columns: 'leads','leads_hubspot','asistio',
+        # 'escuela_cat','plataforma_ad_cat'
+
+        x = np.array([[asistio,leads,leads_hubspot, 
+                      escuela_cat, plataforma_ad_cat 
                       ]])
-        x = x.astype(float)
+
+        x = x.astype(int)
         
         investment_sugg = regressor.predict(x)
+        exp_cpa= investment_sugg / asistio
 
         st.subheader(f'Your investment suggestion is $ {investment_sugg[0]:,.2f} MXN')
         pred_cac= int(investment_sugg/exp_alumns)
-        st.write(f'With this investment and your forecasted alumns, your CAC would be around $ {pred_cac:,} MXN.')
+        st.subheader(f'These are the expected metrics with this investment suggestion:')
+        st.write(f'You will get around {exp_alumns:,} new alumns')
+        st.write(f'Your CAC would be around $ {pred_cac:,} MXN.')
+        st.write(f'Your campaigns will get around {ass_leads_rate:,} paid leads')
+        st.write(f'We cab expect around {leads_hb_rate:,} Hubspot leads')
+        st.write(f'Our assistants goal is: {asistio:,} assistants')
+        st.write(f'The expected cost per assistant is: $ {exp_cpa[0]:,.2f} MXN')
