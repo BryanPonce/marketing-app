@@ -1,3 +1,4 @@
+
 # coding=ISO-8859-1
 
 import pandas as pd
@@ -53,14 +54,16 @@ df1.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
 # reorder columns for easier dataset reading
 
 df1 = df1.reindex(columns=[
-    'paid','inicio_del_informe','batch','escuela','fuente_original','plataforma_ad',
-    'desglose_de_fuente_original_2','importe_gastado','clics',
-    'leads','cpl_campaigns','leads_hubspot','cpl_hubspot',
-    'registro_eb','costo_registro','asistio','costo_asistente',
-    'ensayo','costo_ensayo','inscrito','cac','cvr','cvr_paid',
-    'ventas','roas'
-    ]
+   'paid','inicio_del_informe','batch','escuela','fuente_original','plataforma_ad',
+   'desglose_de_fuente_original_2','importe_gastado','clics',
+   'leads','cpl_campaigns','leads_hubspot','cpl_hubspot',
+   'registro_eb','costo_registro','asistio','costo_asistente',
+   'ensayo','costo_ensayo','inscrito','cac','cvr','cvr_paid',
+   'ventas','roas'
+   ]
 )
+
+# ------------------------------------------------------------------------------------------------------------------------
 
 def show_analyze_marketing():
 
@@ -82,10 +85,15 @@ def show_analyze_marketing():
         options= df1['plataforma_ad'].unique(),
         default= df1['plataforma_ad'].unique()
     )
+    semana_s = st.sidebar.multiselect(
+        'Need to see a specific week?',
+        options= df1['inicio_del_informe'].unique(),
+        default= df1['inicio_del_informe'].unique()
+    )
 
     # ------- connect sidebar to dataframe ------
 
-    df_select = df1.query('batch == @batch_s & escuela == @escuela_s & plataforma_ad == @plataforma_s')
+    df_select = df1.query('batch == @batch_s & escuela == @escuela_s & plataforma_ad == @plataforma_s & inicio_del_informe == @semana_s')
 
     # select for streamlit the filtered dataset
 
@@ -131,8 +139,12 @@ def show_analyze_marketing():
     # separate kpi section from visualization area with markdown
 
     st.markdown('---')
+    
+    #------------------------------------------------------------------------------------------------------------------------------------------
 
-    # alumns per platform -----------------------------------------------------------
+    # this is the beginning of visualizations section--------------------------------    
+    
+    # plot alumns per platform -----------------------------------------------------------
 
     alumns_x_platform= (
         df_select.groupby(by=['plataforma_ad']).sum()[['inscrito']].sort_values(by='inscrito')     
@@ -153,20 +165,23 @@ def show_analyze_marketing():
         xaxis=(dict(showgrid=False))
     )
 
-    # results vs cost ----------------------------------------------------------------
+    st.write(fig_alumns_platform)
+    st.markdown('---')
+
+    # -----------------------------------------------------------------------------------------------------------------------------------------
+    
+    # plot results vs cost ----------------------------------------------------------------
 
     # create a pivot table for the paid steps on the funnel
 
     df_paid= pd.pivot_table(data=df_select, index='paid',
-                    values=[
-                        'leads','importe_gastado','leads_hubspot',
-                        'registro_eb','asistio','ensayo','inscrito'
-                    ],
-                    aggfunc={
-                        'leads': np.sum ,'importe_gastado': np.sum,
-                        'leads_hubspot':np.sum,'registro_eb':np.sum,
-                        'asistio':np.sum,'ensayo':np.sum,'inscrito':np.sum,
-                    },
+                    values=['leads','importe_gastado','leads_hubspot',
+                            'registro_eb','asistio','ensayo','inscrito'
+                           ],
+                    aggfunc={'leads': np.sum ,'importe_gastado': np.sum,
+                             'leads_hubspot':np.sum,'registro_eb':np.sum,
+                             'asistio':np.sum,'ensayo':np.sum,'inscrito':np.sum,
+                            },
                     fill_value=0
     )
     
@@ -256,19 +271,12 @@ def show_analyze_marketing():
         secondary_y=False
     )
 
-    # two new columns to display these graphs:
-    # alumns per platform & results vs cost per stage
-
-    left_column, right_column= st.columns(2)
-
-    # choosing where my plots will be displayed
-
-    left_column.plotly_chart(fig_alumns_platform, use_container_width=True)
-    right_column.plotly_chart(funnel_vs_cost, use_container_width=True)
-
+    st.write(funnel_vs_cost)
     st.markdown('---')
 
-    # get data leads vs cpl per batch
+    # ----------------------------------------------------------------------------------------------------------------------------
+
+    # plot leads vs cpl per batch
 
     batch_cpl= pd.pivot_table(data=df_select, index=['batch'],     
                     values=['leads','importe_gastado'],
@@ -323,9 +331,14 @@ def show_analyze_marketing():
         scaleratio=1, 
         constraintoward='bottom', 
         secondary_y=False
-    )    
+    )
 
-    # get data alumns vs cac per batch
+    st.write(leads_vs_cpl) 
+    st.markdown('---')   
+
+    # -----------------------------------------------------------------------------------------------------------------------------------------
+
+    # plot alumns vs cac per batch
 
     batch_cac= pd.pivot_table(data=df_select, index=['batch'],     
                     values=['inscrito','importe_gastado'],
@@ -380,18 +393,8 @@ def show_analyze_marketing():
         scaleratio=1, 
         constraintoward='bottom', 
         secondary_y=False
-    )  
+    )
 
-    # two new columns to display these graphs:
-    # leads vs cpl & alumns vs cac
-
-    left_column, right_column= st.columns(2)
-
-    # choosing where my plots will be displayed
-
-    left_column.plotly_chart(leads_vs_cpl, use_container_width=True)
-    right_column.plotly_chart(alumns_vs_cac, use_container_width=True)
-
-    # new markdown------------------------------------------------
-
-    st.markdown('---')
+    st.write(alumns_vs_cac)
+    st.markdown('---')  
+ 
