@@ -10,13 +10,6 @@ marketing results.
 
 # Project was created using:
 
-Python
-Pandas
-Numpy
-Matplotlib
-Seaborne
-Scikit-learn
-XGBoost
-Streamlit
+Python, Pandas, Numpy, Matplotlib, Seaborn, Scikit-learn, XGBoost, Streamlit
 
 You can access the Web App here: https://bryanponce-marketing-app-app-z6h367.streamlitapp.com/
