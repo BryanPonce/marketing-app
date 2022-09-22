@@ -23,7 +23,8 @@ def show_about_page():
     st.write('* I would like to include new features such as sex, city and age. I think this could help to improve the model performance.')
     st.write("* The most important feature I would like to include is the connection to my platforms' APIs, to keep my Data updated and not fixed as it is Today.")
     
-    
+    st.write("""### What I loved of this project""")
+    st.write("I am a marketer since 2015, and I've been hearing more and more about algorithms, Artifficial Intelligence, Machine Learning and much more in the roles I worked on, so to me was a big step deciding to learn Data Science. I feel really excited for all the upcoming challenges, applying what I've learn.")
     st.write("It's amazing to find out how much you actually know and how much you can build from all the knowledge you got in the last year of programming experience. I must say I'm surprised I was capable of creating this web app and I encourage you to learn a programming language that can help you create tools for your everyday tasks.")
     
     st.write('If you want to give me some feedback, you can always contact me in [Linked In](https://www.linkedin.com/in/bryan-fernando-ponce/) or via email: bryanponce93@yahoo.com')
