@@ -1,4 +1,4 @@
-# marketing-app
+# Marketing-app
 
 A tool for marketing analysis and decision making in paid media
 
@@ -8,7 +8,7 @@ dashboards I use for decision making and save time updating spreadsheets.
 Also, I'm trying to create a tool that can make easier the budget allocation when we are activating a campaign, with the goal of maximizing
 marketing results.
 
-Project was created using:
+# Project was created using:
 
 Python
 Pandas
