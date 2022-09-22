@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """model_testing_marketing_app.ipynb
 
@@ -92,7 +93,7 @@ df1['plataforma_ad'] = df1['plataforma_ad'].astype('category')
 
 # # encoding labels
 
-# df1['escuela_cat'] = df1['escuela'].cat.codes
+df1['escuela_cat'] = df1['escuela'].cat.codes
 
 # # escuela      ---------
 # # coding       0
@@ -101,7 +102,7 @@ df1['plataforma_ad'] = df1['plataforma_ad'].astype('category')
 # # unknown      3
 # # ux           4
 
-# df1['plataforma_ad_cat'] = df1['plataforma_ad'].cat.codes
+df1['plataforma_ad_cat'] = df1['plataforma_ad'].cat.codes
 
 # # plataforma_ad   ---------
 # # facebook_ads    0
@@ -245,26 +246,26 @@ df1['plataforma_ad'] = df1['plataforma_ad'].astype('category')
 # # Search-Competencia-Gen 10+                             60
 # # Search-MasterCoding-Gen 10+                            61
 
-from sklearn.preprocessing import OneHotEncoder
+# from sklearn.preprocessing import OneHotEncoder
 
-# creating instance of one-hot-encoder
-enc = OneHotEncoder(handle_unknown='ignore')
-# passing bridge-types-cat column (label encoded values of bridge_types)
-enc_esc = pd.DataFrame(enc.fit_transform(df1[['escuela']]).toarray())
-enc_plat = pd.DataFrame(enc.fit_transform(df1[['plataforma_ad']]).toarray())
+# # creating instance of one-hot-encoder
+# enc = OneHotEncoder(handle_unknown='ignore')
+# # passing bridge-types-cat column (label encoded values of bridge_types)
+# enc_esc = pd.DataFrame(enc.fit_transform(df1[['escuela']]).toarray())
+# enc_plat = pd.DataFrame(enc.fit_transform(df1[['plataforma_ad']]).toarray())
 
-# merge with main df bridge_df on key values
-df1_enc= df1.join(enc_esc)
-df1_enc= df1.join(enc_plat)
+# # merge with main df bridge_df on key values
+# df1_enc= df1.join(enc_esc)
+# df1_enc= df1.join(enc_plat)
 
-dum_df1 = pd.get_dummies(df1, 
-                         columns=["escuela"], 
-                         prefix=["school_is"])
-dum_df1 = pd.get_dummies(dum_df1, 
-                         columns=["plataforma_ad"], 
-                         prefix=["platform_is"])
+# dum_df1 = pd.get_dummies(df1, 
+#                          columns=["escuela"], 
+#                          prefix=["school_is"])
+# dum_df1 = pd.get_dummies(dum_df1, 
+#                          columns=["plataforma_ad"], 
+#                          prefix=["platform_is"])
 
-dum_df1.columns.values
+# dum_df1.dtypes
 
 # finding correlation coefficients between columns
 # i'm not including encoded columns. there's no correlation
@@ -294,7 +295,29 @@ sns.heatmap(kot, annot=True, cmap="Greens")
 #df1.corr(method='pearson').loc['leads'].sort_values(ascending=False)
 # campaign leads has a correlation coefficient of .78 with investment
 
-df1.corr(method='pearson').loc['asistio'].sort_values(ascending=False)
+df1.corr(method='pearson').loc['importe_gastado'].sort_values(ascending=False)
+
+# i'm converting my categoric columns (uint8) into int64 because i think
+# i'm having trouble with the input of the models 
+
+# dum_df1['school_is_coding'] = dum_df1['school_is_coding'].astype(int)
+# dum_df1['school_is_data'] = dum_df1['school_is_data'].astype(int)
+# dum_df1['school_is_marketing'] = dum_df1['school_is_marketing'].astype(int)
+# dum_df1['school_is_unknown'] = dum_df1['school_is_unknown'].astype(int)
+# dum_df1['school_is_ux'] = dum_df1['school_is_ux'].astype(int)
+
+# dum_df1['platform_is_facebook_ads'] = dum_df1[
+#                                              'platform_is_facebook_ads'
+#                                              ].astype(int)
+# dum_df1['platform_is_google_ads'] = dum_df1[
+#                                            'platform_is_google_ads'
+#                                            ].astype(int)
+# dum_df1['platform_is_linkedin_ads'] = dum_df1[
+#                                              'platform_is_linkedin_ads'
+#                                              ].astype(int)
+# dum_df1['platform_is_tiktok_ads'] = dum_df1[
+#                                            'platform_is_tiktok_ads'
+#                                            ].astype(int)
 
 # imagining the question i'm doing to my model:
 
@@ -304,11 +327,24 @@ df1.corr(method='pearson').loc['asistio'].sort_values(ascending=False)
 # and i want you to tell me how much i need to invest in this campaign to reach
 # my objective 
 
-x= dum_df1[['asistio','leads','leads_hubspot', 'school_is_coding', 
-            'school_is_data','school_is_marketing', 'school_is_unknown', 
-            'school_is_ux','platform_is_facebook_ads', 'platform_is_google_ads',
-            'platform_is_linkedin_ads', 'platform_is_tiktok_ads']]     
-y= dum_df1[['importe_gastado']]
+# x= dum_df1[['asistio','leads','leads_hubspot',
+#             'school_is_coding','school_is_data',
+#             'school_is_marketing','school_is_unknown', 
+#             'school_is_ux',
+#             'platform_is_facebook_ads', 
+#             'platform_is_google_ads',
+#             'platform_is_linkedin_ads', 
+#             'platform_is_tiktok_ads'
+#             ]]     
+# y= dum_df1[['importe_gastado']]
+
+
+x= df1[['leads','leads_hubspot','asistio',
+        'escuela_cat','plataforma_ad_cat'
+        ]]     
+y= df1[['importe_gastado']]
+
+x
 
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, 
@@ -327,14 +363,14 @@ from sklearn.model_selection import cross_val_score
 
 ols = linear_model.LinearRegression()
 ols.fit(x_train,y_train)
-np.mean(cross_val_score(ols, x_train, y_train, cv = 5, scoring = "r2"))
+np.mean(cross_val_score(ols, x_train, y_train, cv = 7, scoring = "r2"))
 
 model = linear_model.Lasso()
 print("Lasso regression score: ", np.round(
     np.mean(cross_val_score(model, 
                             x_train, 
                             y_train, 
-                            cv = 5, 
+                            cv = 7, 
                             scoring = "r2")), 5))
 
 from sklearn.model_selection import GridSearchCV
@@ -363,7 +399,7 @@ print("Ridge regression score: ",
       np.round(np.mean(cross_val_score(model, 
                                        x_train, 
                                        y_train, 
-                                       cv = 5, 
+                                       cv = 7, 
                                        scoring = "r2")), 5))
 
 alphas = [int(x) for x in np.linspace(1, 10, num = 20)]
@@ -388,7 +424,7 @@ print("Elastic Net regression score: ", np.round(np.mean(cross_val_score(
     model, 
     x_train, 
     y_train, 
-    cv = 5, 
+    cv = 7, 
     scoring = "r2")), 5))
 
 alphas = np.array([0.01, 0.02, 0.025, 0.05,0.1,0.5,1])
@@ -404,7 +440,7 @@ print("Elastic Net regression improvement after hyperparameter tuning: {0}%".for
         1 - ((np.round(np.mean(cross_val_score(model, 
                                                x_train, 
                                                y_train, 
-                                               cv = 5, 
+                                               cv = 7, 
                                                scoring = "r2")), 5))
         / np.round(grid_elastic.best_score_, 5))) * 100, 5)))
 
@@ -417,7 +453,7 @@ print("Random Forest regression score: ",
       np.round(np.mean(cross_val_score(rf_Model, 
                                        x_train, 
                                        y_train.values.ravel(), 
-                                       cv = 5, 
+                                       cv = 7, 
                                        scoring = "r2")), 5))
 
 param_grid = {'n_estimators': [int(x) for x in np.linspace(25, 75, num = 3)],
@@ -433,7 +469,7 @@ from sklearn.ensemble import RandomForestRegressor
 rf_Model = RandomForestRegressor()
 rf_Grid = GridSearchCV(estimator = rf_Model, 
                        param_grid = param_grid, 
-                       cv = 5, 
+                       cv = 7, 
                        verbose=2, 
                        n_jobs = 4)
 rf_Grid.fit(x_train, y_train.values.ravel())
@@ -444,7 +480,7 @@ print("Random Forest regression improvement after hyperparameter tuning: {0}%".f
     np.round((1 - ((np.round(np.mean(cross_val_score(rf_Model, 
                                                      x_train, 
                                                      y_train.values.ravel(), 
-                                                     cv = 5, 
+                                                     cv = 7, 
                                                      scoring = "r2")), 5))
     / np.round(rf_Grid.best_score_, 5))) * 100, 5)))
 
@@ -457,7 +493,7 @@ print("Gradient Booster regression score: ",
       np.round(np.mean(cross_val_score(gbr, 
                                        x_train, 
                                        y_train.values.ravel(), 
-                                       cv = 5, 
+                                       cv = 7, 
                                        scoring = "r2")), 5))
 
 param_grid = {'n_estimators': [400, 500, 600],
@@ -469,7 +505,7 @@ print(param_grid)
 model = GradientBoostingRegressor()
 grid_gbr = GridSearchCV(estimator = model, 
                         param_grid = param_grid, 
-                        cv = 5, 
+                        cv = 7, 
                         verbose=2, 
                         n_jobs = 4)
 grid_gbr.fit(x_train, y_train.values.ravel())
@@ -480,7 +516,7 @@ print("Gradient Booster regression improvement after hyperparameter tuning: {0}%
     np.round((1 - ((np.round(np.mean(cross_val_score(gbr,
                                                      x_train,
                                                      y_train.values.ravel(),
-                                                     cv = 5,
+                                                     cv = 7,
                                                      scoring = "r2")), 5))
     /np.round(grid_gbr.best_score_, 5))) * 100, 5)))
 
@@ -497,7 +533,7 @@ xgb = xgboost.XGBRegressor(objective ='reg:squarederror',
 np.mean(cross_val_score(xgb, 
                         x_train, 
                         y_train, 
-                        cv = 5, 
+                        cv = 7, 
                         scoring = "r2"))
 
 param_grid = {'n_estimators': [int(x) for x in np.linspace(250, 500, num = 5)],
@@ -510,7 +546,7 @@ print(param_grid)
 model = xgboost.XGBRegressor(objective ='reg:squarederror')
 grid_xgb = GridSearchCV(estimator = model, 
                         param_grid = param_grid, 
-                        cv = 5, 
+                        cv = 7, 
                         verbose=2, 
                         n_jobs = 4)
 grid_xgb.fit(x_train, y_train)
@@ -521,7 +557,7 @@ print("XGBoost Forest regression improvement after hyperparameter tuning: {0}%".
     np.round((1 - ((np.round(np.mean(cross_val_score(xgb,
                                                      x_train,
                                                      y_train,
-                                                     cv = 5,
+                                                     cv = 7,
                                                      scoring = "r2")), 5))
     /np.round(grid_xgb.best_score_, 5))) * 100, 5)))
 
@@ -536,10 +572,10 @@ def create_polynomial_regression_model(degree):
     return np.mean(cross_val_score(poly, 
                                    X_poly, 
                                    y_train, 
-                                   cv=5, 
+                                   cv=7, 
                                    scoring = "r2"))
 cv_scores=[]
-degrees =[2,3,4, 5]
+degrees =[2,3,4,5]
 for degree in degrees:
     cv_scores.append(create_polynomial_regression_model(degree))
     
@@ -632,15 +668,44 @@ print("Stack regression accuracy: %.2f" % r2_score(y_test, stack_yhat))
 # 'platform_is_facebook_ads', 'platform_is_google_ads', 
 # 'platform_is_linkedin_ads', 'platform_is_tiktok_ads'
 
-x = [['600','1600','1400', '1', '0','0', '0', '0','1', '0','0', '0']]
+# # escuela      ---------
+# # coding       0
+# # data         1
+# # marketing    2
+# # unknown      3
+# # ux           4
 
-x = pd.DataFrame(x, columns = ['asistio','leads','leads_hubspot', 
-                               'school_is_coding', 'school_is_data',
-                               'school_is_marketing', 'school_is_unknown', 
-                               'school_is_ux','platform_is_facebook_ads', 
-                               'platform_is_google_ads',
-                               'platform_is_linkedin_ads', 
-                               'platform_is_tiktok_ads'])
+# # plataforma_ad   ---------
+# # facebook_ads    0
+# # google_ads      1
+# # linkedin_ads    2
+# # tiktok_ads      3
+
+x = [[450,4000,3650,
+      1,0
+     ]]
+
+x = pd.DataFrame(x, columns=['leads','leads_hubspot','asistio',
+                             'escuela_cat','plataforma_ad_cat'
+                            ])
+
+# -------------------------------------------------
+# x = pd.DataFrame(x, columns=['importe_gastado','registro_eb','leads','leads_hubspot',
+#                              'escuela_cat','plataforma_ad_cat'
+#                              ])  
+# XGBoost regression accuracy: 0.83
+# -------------------------------------------------   
+
+# x = pd.DataFrame(x, columns = ['asistio','leads','leads_hubspot', 
+#                                'school_is_coding','school_is_data',
+#                                'school_is_marketing','school_is_unknown', 
+#                                'school_is_ux',
+#                                'platform_is_facebook_ads', 
+#                                'platform_is_google_ads',
+#                                'platform_is_linkedin_ads', 
+#                                'platform_is_tiktok_ads'
+#                                ])
+
 #x
 
 y_pred = rf_Grid.predict(x)
