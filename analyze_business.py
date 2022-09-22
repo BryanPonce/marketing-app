@@ -1,3 +1,4 @@
+
 # coding=ISO-8859-1
 
 # import required libraries for this page
@@ -90,10 +91,15 @@ def show_analyze_business():
         options= df1['plataforma_ad'].unique(),
         default= df1['plataforma_ad'].unique()
     )
+    semana_s = st.sidebar.multiselect(
+        'Need to see a specific week?',
+        options= df1['inicio_del_informe'].unique(),
+        default= df1['inicio_del_informe'].unique()
+    )
 
     # ------- connect sidebar to dataframe ------
 
-    df_select = df1.query('batch == @batch_s & escuela == @escuela_s & paid == @paid_s & plataforma_ad == @plataforma_s')
+    df_select = df1.query('batch == @batch_s & escuela == @escuela_s & paid == @paid_s & plataforma_ad == @plataforma_s & inicio_del_informe == @semana_s')
 
     # select for streamlit the filtered dataset
 
@@ -131,6 +137,8 @@ def show_analyze_business():
     # separate kpi section from visualization area with markdown
 
     st.markdown('---')
+
+    #---------------------------------------------------------------------------------------------------------------------------------------
 
     # alumns vs cac by batch graph
 
@@ -189,6 +197,11 @@ def show_analyze_business():
         constraintoward='bottom', 
         secondary_y=False
     )
+    
+    st.write(fig_ins_cac)
+    st.markdown('---')
+
+    #---------------------------------------------------------------------------------------------------------------------------------------
 
     # sales per batch graph
 
@@ -211,17 +224,10 @@ def show_analyze_business():
         xaxis=(dict(showgrid=False))
     )
 
-    # two new columns to display these graphs:
-    # sales per batch & cac vs alumns
-
-    left_column, right_column= st.columns(2)
-
-    # choosing where my plots will be displayed
-
-    left_column.plotly_chart(fig_ventas_batch, use_container_width=True)
-    right_column.plotly_chart(fig_ins_cac, use_container_width=True)
-
+    st.write(fig_ventas_batch)
     st.markdown('---')
+
+    #----------------------------------------------------------------------------------------------------------------------------------------
 
     # graph: inv vs roas-------------------------------------------------------
 
@@ -285,6 +291,11 @@ def show_analyze_business():
         secondary_y=False
     )
 
+    st.write(fig_inv_roas)
+    st.markdown('---')
+
+    #-------------------------------------------------------------------------------------------------------------------------------------------
+
     # conversion funnel graph --------------------------------------------------
 
     data_funnel= df_select[['leads','leads_hubspot','registro_eb','asistio','ensayo','inscrito']]
@@ -309,13 +320,5 @@ def show_analyze_business():
         )
     )
 
-    # two new columns to display my graphs: inv vs roas & conversion funnel---------------------------------
-
-    left_column, right_column= st.columns(2)
-
-    left_column.plotly_chart(fig_inv_roas, use_container_width=True)
-    right_column.plotly_chart(fig_funnel, use_container_width=True)
-
-    # new markdown------------------------------------------------
-
+    st.write(fig_funnel)
     st.markdown('---')
