@@ -17,7 +17,7 @@ regressor = data["model"]
 
 # import metrics data
 
-url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_19_09.csv'
+url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_21_09.csv'
 df =  pd.read_csv(url, encoding='ISO-8859-1')
 
 # replace characters to avoid problems with the streamlit filter
