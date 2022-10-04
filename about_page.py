@@ -14,7 +14,7 @@ def show_about_page():
     st.write("""### Original Data""")
     st.write('* This project started with a spreadsheet that gathers a year of information from different platforms, such as Facebook Ads, Google Ads, Hubspot and more with more than 65k observations. This Dataset was used to create visualizations in Marketing, Business and Call Center analysis pages.')
     st.write('* After crossing information using a pivot table, the number of observations reduced to 6,832, which is the Dataset I will be using for my modeling.')
-    st.write('* Most important feature to calculate budget was the number of paid leads with 0.79 Pearson Correlation Score.')
+    st.write('* Most important feature to calculate budget was the number of paid leads with 0.81 Pearson Correlation Score.')
     st.write('* 9 regression models were used for this project being Random Forest Regressor the model with best performance on test data with 0.75 R2 score, which is the model that I used in the predict page.')
     st.write('* I included important Data in the predict page that can help the user find realistic goals based on the last cycle of campaigns. A cool feature here is that the metrics are dynamic and they change as you filter and select your objectives.')
     
