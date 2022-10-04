@@ -227,7 +227,7 @@ def show_analyze_business():
         secondary_y=False
     )
     
-    st.write(fig_ins_cac, use_container_width=True)
+    st.write(fig_ins_cac)
     st.markdown('---')
 
     #---------------------------------------------------------------------------------------------------------------------------------------
