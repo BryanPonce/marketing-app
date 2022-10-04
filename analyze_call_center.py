@@ -382,7 +382,7 @@ def show_analyze_call_center():
     )
     alumn_vs_hour.update_layout(
         title='<b>Alumns vs Hour of Submission</b>',
-        xaxis_title='Day of the Week',
+        xaxis_title='Hour of the Day',
         yaxis_title='Alumns vs Submission Day',
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=(dict(showgrid=False)),
