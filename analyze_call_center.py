@@ -146,10 +146,10 @@ def show_analyze_call_center():
         st.write(f'Total EB Rate: {eb_rate:,} %')
         st.write(f'Total Assistants: {asist_total:,}')
         st.write(f'Total Assistance Rate: {asist_rate_total} %')
-        st.write(f'Total Assistants: {ensayo_total:,}')
-        st.write(f'Total Assistance Rate: {ensayo_rate_total} %')
-        st.write(f'Total Assistants: {ins_total:,}')
-        st.write(f'Total Assistance Rate: {cvr_total} %')
+        st.write(f'Total Essays: {ensayo_total:,}')
+        st.write(f'Total Essay Rate: {ensayo_rate_total} %')
+        st.write(f'Total Alumns: {ins_total:,}')
+        st.write(f'Conversion Rate: {cvr_total} %')
         
     with right_column:
         st.subheader('Stage rates based on previous step')
@@ -158,10 +158,10 @@ def show_analyze_call_center():
         st.write(f'EB Rate: {eb_rate:,} %')
         st.write(f'Total Assistants: {asist_total:,}')
         st.write(f'Assistance Rate: {asist_rate} %')
-        st.write(f'Total Assistants: {ensayo_total:,}')
-        st.write(f'Assistance Rate: {ensayo_rate} %')
-        st.write(f'Total Assistants: {ins_total:,}')
-        st.write(f'Assistance Rate: {ins_rate} %')
+        st.write(f'Total Essays: {ensayo_total:,}')
+        st.write(f'Essay Rate: {ensayo_rate} %')
+        st.write(f'Total Alumns: {ins_total:,}')
+        st.write(f'Alumn Rate: {ins_rate} %')
         
     st.markdown('---')
 
