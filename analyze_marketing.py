@@ -8,14 +8,42 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit as st 
 
-# import visualization data
+def load_df():
+    
+    url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_21_09.csv'
+    df =  pd.read_csv(url, encoding='ISO-8859-1')
 
-url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_21_09.csv'
-df =  pd.read_csv(url, encoding='ISO-8859-1')
+    df.columns = df.columns.str.replace(' ', '_')
+    
+    df['batch']= df['batch'].astype(int)
+    df['inicio_del_informe']= df['inicio_del_informe'].astype('datetime64[ns]')
+    df['nombre_del_conjunto_de_anuncios']= df['nombre_del_conjunto_de_anuncios'].astype(str)
+    df['campaign_name']= df['campaign_name'].astype(str)
+    df['leads']= df['leads'].astype(int)
+    df['clics']= df['clics'].astype(int)
+    df['impresiones']= df['impresiones'].astype(int)
+    df['importe_gastado']= df['importe_gastado'].astype(float)
+    df['paid']= df['paid'].astype(int)
+    df['leads_hubspot']= df['leads_hubspot'].astype(int)
+    df['escuela']= df['escuela'].astype(str)
+    df['fuente_original']= df['fuente_original'].astype(str)
+    df['desglose_de_fuente_original_1']= df['desglose_de_fuente_original_1'].astype(str)
+    df['plataforma_ad']= df['plataforma_ad'].astype(str)
+    df['desglose_de_fuente_original_2']= df['desglose_de_fuente_original_2'].astype(str)
+    df['kw_paid_search']= df['kw_paid_search'].astype(str)
+    df['sesion']= df['sesion'].astype(str)
+    df['registro_eb']= df['registro_eb'].astype(int)
+    df['asistio']= df['asistio'].astype(int)
+    df['ensayo']= df['ensayo'].astype(int)
+    df['ventas']= df['ventas'].astype(float)
+    df['inscrito']= df['inscrito'].astype(int)
+    df['fecha_de_creacion']= df['fecha_de_creacion'].astype('datetime64[ns]')
+    df['dia']= df['dia'].astype(str)
+    df['hora']= df['hora'].astype(str)
 
-# replace characters to avoid problems with the streamlit filter
+    return df
 
-df.columns = df.columns.str.replace(' ', '_')
+df= load_df() 
 
 # for this page we will only use marketing information, so i select only paid media
 
@@ -128,13 +156,15 @@ def show_analyze_marketing():
         st.subheader(f'ROAS: {roas_total}')
         st.subheader(f'Total Leads: {leads_total:,}')
         st.subheader(f'Campaigns CPL: $ {paid_cpl_total} MXN')
-        st.subheader(f'Hubspot CPL: $ {hs_cpl_total} MXN')
+        st.subheader(f'Campaigns CVR: {paid_cvr_total} %')
+        
     with right_column:
         st.subheader(f'Total Sales: $ {ventas_totales:,} MXN')
         st.subheader(f'Alumns: {ins_total:,}')
         st.subheader(f'CAC: $ {cac_total:,} MXN')
         st.subheader(f'Hubspot CVR: {hs_cvr_total} %')
-        st.subheader(f'Campaigns CVR: {paid_cvr_total} %')
+        st.subheader(f'Hubspot CPL: $ {hs_cpl_total} MXN')
+        
     
     # separate kpi section from visualization area with markdown
 
@@ -145,6 +175,8 @@ def show_analyze_marketing():
     # this is the beginning of visualizations section--------------------------------    
     
     # plot alumns per platform -----------------------------------------------------------
+
+    st.subheader("This plot shows how new alumns behave depending on the advertising platform")
 
     alumns_x_platform= (
         df_select.groupby(by=['plataforma_ad']).sum()[['inscrito']].sort_values(by='inscrito')     
@@ -173,6 +205,8 @@ def show_analyze_marketing():
     # plot results vs cost ----------------------------------------------------------------
 
     # create a pivot table for the paid steps on the funnel
+
+    st.subheader("This plot shows how the costs behaves on each stage of our customer journey")
 
     df_paid= pd.pivot_table(data=df_select, index='paid',
                     values=['leads','importe_gastado','leads_hubspot',
@@ -278,6 +312,8 @@ def show_analyze_marketing():
 
     # plot leads vs cpl per batch
 
+    st.subheader("This plot shows our Lead Acquisition and the cost on each Batch")
+
     batch_cpl= pd.pivot_table(data=df_select, index=['batch'],     
                     values=['leads','importe_gastado'],
                     aggfunc={'leads':np.sum,'importe_gastado':np.sum},
@@ -339,6 +375,8 @@ def show_analyze_marketing():
     # -----------------------------------------------------------------------------------------------------------------------------------------
 
     # plot alumns vs cac per batch
+
+    st.subheader("This plot shows new alumns and their Acquisition Cost by Batch")
 
     batch_cac= pd.pivot_table(data=df_select, index=['batch'],     
                     values=['inscrito','importe_gastado'],
