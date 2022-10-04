@@ -233,3 +233,15 @@ def show_predict_page():
         st.write(f'We can expect around {leads_hb_rate:,} Hubspot leads')
         st.write(f'Our assistants goal is: {asistio:,} assistants')
         st.write(f'The expected cost per assistant is: $ {exp_cpa[0]:,.2f} MXN')
+
+        # hide streamlit style---------------
+
+    hide_style= """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+
+    st.markdown(hide_style, unsafe_allow_html=True)
