@@ -30,3 +30,14 @@ def show_about_page():
     st.write('If you want to give me some feedback, you can always contact me in [Linked In](https://www.linkedin.com/in/bryan-fernando-ponce/) or via email: bryanponce93@yahoo.com')
     st.write("You can see the full code required to do this app in its [GitHub repo.](https://github.com/BryanPonce/marketing-app)")  
     
+    # hide streamlit style---------------
+
+    hide_style= """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+
+    st.markdown(hide_style, unsafe_allow_html=True)
