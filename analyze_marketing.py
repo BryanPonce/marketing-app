@@ -434,5 +434,16 @@ def show_analyze_marketing():
     )
 
     st.write(alumns_vs_cac)
-    st.markdown('---')  
+    
+        # hide streamlit style---------------
+
+    hide_style= """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+
+    st.markdown(hide_style, unsafe_allow_html=True)
  
