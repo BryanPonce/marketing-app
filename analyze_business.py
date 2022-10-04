@@ -10,15 +10,42 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit as st #---- pip install streamlit
 
+def load_df():
 
-# import visualization data
+    url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_21_09.csv'
+    df =  pd.read_csv(url, encoding='ISO-8859-1')
 
-url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_21_09.csv'
-df =  pd.read_csv(url, encoding='ISO-8859-1')
+    df.columns = df.columns.str.replace(' ', '_')
+    
+    df['batch']= df['batch'].astype(int)
+    df['inicio_del_informe']= df['inicio_del_informe'].astype('datetime64[ns]')
+    df['nombre_del_conjunto_de_anuncios']= df['nombre_del_conjunto_de_anuncios'].astype(str)
+    df['campaign_name']= df['campaign_name'].astype(str)
+    df['leads']= df['leads'].astype(int)
+    df['clics']= df['clics'].astype(int)
+    df['impresiones']= df['impresiones'].astype(int)
+    df['importe_gastado']= df['importe_gastado'].astype(float)
+    df['paid']= df['paid'].astype(int)
+    df['leads_hubspot']= df['leads_hubspot'].astype(int)
+    df['escuela']= df['escuela'].astype(str)
+    df['fuente_original']= df['fuente_original'].astype(str)
+    df['desglose_de_fuente_original_1']= df['desglose_de_fuente_original_1'].astype(str)
+    df['plataforma_ad']= df['plataforma_ad'].astype(str)
+    df['desglose_de_fuente_original_2']= df['desglose_de_fuente_original_2'].astype(str)
+    df['kw_paid_search']= df['kw_paid_search'].astype(str)
+    df['sesion']= df['sesion'].astype(str)
+    df['registro_eb']= df['registro_eb'].astype(int)
+    df['asistio']= df['asistio'].astype(int)
+    df['ensayo']= df['ensayo'].astype(int)
+    df['ventas']= df['ventas'].astype(float)
+    df['inscrito']= df['inscrito'].astype(int)
+    df['fecha_de_creacion']= df['fecha_de_creacion'].astype('datetime64[ns]')
+    df['dia']= df['dia'].astype(str)
+    df['hora']= df['hora'].astype(str)
 
-# replace characters to avoid problems with the streamlit filter
+    return df
 
-df.columns = df.columns.str.replace(' ', '_')
+df= load_df()    
 
 # create a pivot table to find new metrics in dataset
 
@@ -142,6 +169,8 @@ def show_analyze_business():
 
     # alumns vs cac by batch graph
 
+    st.subheader("This plot shows the new alumns and its' Client Acquisition Cost per Batch")
+
     ins_b_cac= pd.pivot_table(data=df_select,index=['batch'],
                     values=['importe_gastado','inscrito',
                     ],
@@ -205,6 +234,8 @@ def show_analyze_business():
 
     # sales per batch graph
 
+    st.subheader("This plot shows the Total Sales per Batch")
+
     ventas_x_batch= (
         df_select.groupby(by=['batch']).sum()[['ventas']].sort_values(by='ventas')     
     )
@@ -230,6 +261,8 @@ def show_analyze_business():
     #----------------------------------------------------------------------------------------------------------------------------------------
 
     # graph: inv vs roas-------------------------------------------------------
+
+    st.subheader("This plot shows the ROAS vs the Investment made per Batch")
 
     inv_v_roas= pd.pivot_table(data=df_select,index=['batch'],
                     values=['importe_gastado','ventas',
@@ -298,6 +331,8 @@ def show_analyze_business():
 
     # conversion funnel graph --------------------------------------------------
 
+    st.subheader("This plot shows how our Customer Journey behaves on each stage")
+
     data_funnel= df_select[['leads','leads_hubspot','registro_eb','asistio','ensayo','inscrito']]
     data_funnel= data_funnel.transpose()
     x= data_funnel.sum(axis=1)
@@ -322,3 +357,4 @@ def show_analyze_business():
 
     st.write(fig_funnel)
     st.markdown('---')
+    
