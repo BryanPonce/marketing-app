@@ -411,3 +411,15 @@ def show_analyze_call_center():
     )
 
     st.write(alumn_vs_hour) 
+
+        # hide streamlit style---------------
+
+    hide_style= """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+
+    st.markdown(hide_style, unsafe_allow_html=True)
