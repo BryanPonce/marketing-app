@@ -356,5 +356,15 @@ def show_analyze_business():
     )
 
     st.write(fig_funnel)
-    st.markdown('---')
     
+        # hide streamlit style---------------
+
+    hide_style= """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+
+    st.markdown(hide_style, unsafe_allow_html=True)
