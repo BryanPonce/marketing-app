@@ -169,7 +169,7 @@ def show_analyze_business():
 
     # alumns vs cac by batch graph
 
-    st.subheader("This plot shows the new alumns and its' Client Acquisition Cost per Batch")
+    st.subheader("This plot shows the new alumns and their Client Acquisition Cost per Batch")
 
     ins_b_cac= pd.pivot_table(data=df_select,index=['batch'],
                     values=['importe_gastado','inscrito',
