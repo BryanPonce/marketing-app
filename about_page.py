@@ -12,7 +12,7 @@ def show_about_page():
     st.write('I decided to develop this application with the goal of automating metric analysis for decision making and a prediction page where you can see allocation suggestions that could be helpful for you to maximize your marketing results.')   
     
     st.write("""### Original Data""")
-    st.write('* This project started with a spreadsheet that gathers a year of information from different platforms, such as Facebook Ads, Google Ads, Hubspot and more with more than 46k observations. This Dataset was used to create visualizations in Marketing and Business analysis pages.')
+    st.write('* This project started with a spreadsheet that gathers a year of information from different platforms, such as Facebook Ads, Google Ads, Hubspot and more with more than 65k observations. This Dataset was used to create visualizations in Marketing and Business analysis pages.')
     st.write('* After crossing information using a pivot table, the number of observations reduced to 1,890, which is the Dataset I will be using for my modeling.')
     st.write('* Most important feature to calculate budget was the number of paid leads with 0.79 Pearson Correlation Score.')
     st.write('* 9 regression models were used for this project being Random Forest Regressor the model with best performance on test data with 0.75 R2 score, which is the model that I used in the predict page.')
@@ -28,4 +28,5 @@ def show_about_page():
     st.write("It's amazing to find out how much you actually know and how much you can build from all the knowledge you got in the last year of programming experience. I must say I'm surprised I was capable of creating this web app and I encourage you to learn a programming language that can help you create tools for your everyday tasks.")
     
     st.write('If you want to give me some feedback, you can always contact me in [Linked In](https://www.linkedin.com/in/bryan-fernando-ponce/) or via email: bryanponce93@yahoo.com')
-    st.write("You can see the full code required to do this app in its [GitHub repo.](https://github.com/BryanPonce/marketing-app)")
+    st.write("You can see the full code required to do this app in its [GitHub repo.](https://github.com/BryanPonce/marketing-app)")  
+    
