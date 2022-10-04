@@ -1,4 +1,6 @@
 
+# coding=ISO-8859-1
+
 import streamlit as st
 import pickle
 import numpy as np
@@ -15,14 +17,42 @@ data = load_model()
 
 regressor = data["model"]
 
-# import metrics data
+def load_df():
 
-url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_21_09.csv'
-df =  pd.read_csv(url, encoding='ISO-8859-1')
+    url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_21_09.csv'
+    df =  pd.read_csv(url, encoding='ISO-8859-1')
 
-# replace characters to avoid problems with the streamlit filter
+    df.columns = df.columns.str.replace(' ', '_')
+    
+    df['batch']= df['batch'].astype(int)
+    df['inicio_del_informe']= df['inicio_del_informe'].astype('datetime64[ns]')
+    df['nombre_del_conjunto_de_anuncios']= df['nombre_del_conjunto_de_anuncios'].astype(str)
+    df['campaign_name']= df['campaign_name'].astype(str)
+    df['leads']= df['leads'].astype(int)
+    df['clics']= df['clics'].astype(int)
+    df['impresiones']= df['impresiones'].astype(int)
+    df['importe_gastado']= df['importe_gastado'].astype(float)
+    df['paid']= df['paid'].astype(int)
+    df['leads_hubspot']= df['leads_hubspot'].astype(int)
+    df['escuela']= df['escuela'].astype(str)
+    df['fuente_original']= df['fuente_original'].astype(str)
+    df['desglose_de_fuente_original_1']= df['desglose_de_fuente_original_1'].astype(str)
+    df['plataforma_ad']= df['plataforma_ad'].astype(str)
+    df['desglose_de_fuente_original_2']= df['desglose_de_fuente_original_2'].astype(str)
+    df['kw_paid_search']= df['kw_paid_search'].astype(str)
+    df['sesion']= df['sesion'].astype(str)
+    df['registro_eb']= df['registro_eb'].astype(int)
+    df['asistio']= df['asistio'].astype(int)
+    df['ensayo']= df['ensayo'].astype(int)
+    df['ventas']= df['ventas'].astype(float)
+    df['inscrito']= df['inscrito'].astype(int)
+    df['fecha_de_creacion']= df['fecha_de_creacion'].astype('datetime64[ns]')
+    df['dia']= df['dia'].astype(str)
+    df['hora']= df['hora'].astype(str)
 
-df.columns = df.columns.str.replace(' ', '_')
+    return df
+
+df= load_df() 
 
 # for this page we will only use marketing information, so i select only paid media
 
@@ -82,20 +112,23 @@ def show_predict_page():
     #image = Image.open('Zona_Rio_Tijuana.jpg')
     #st.image(image, caption = 'Zona Rio is one of the most popular areas of Tijuana')
 
-    lead_ass_rate= round((df_select['asistio'].sum() / df_select['leads'].sum()),2)
+    lead_ass_rate= df_select['asistio'].sum() / df_select['leads'].sum()
     lead_hb_rate= round((df_select['leads_hubspot'].sum() / df_select['leads'].sum()), 2)
     lead_hb_ass_rate= round((df_select['asistio'].sum() / df_select['leads_hubspot'].sum()), 2)
     hb_cvr= round((df_select['inscrito'].sum() / df_select['leads_hubspot'].sum()), 2)
     paid_cvr= round((df_select['inscrito'].sum() / df_select['leads'].sum()), 2)
+    assistants= df_select['asistio'].sum()
 
     # first, let's find out our assistants objective
 
     st.subheader(f'How many assistants do we need?')
-    asistio = st.slider("Assistants:", 100,800, step= 25)
+    st.write(f'This is the number of assistants obtained in Batch {last_batch}: {assistants:,}')
+
+    asistio = st.slider("Assistants:", 100,600, step= 20)
     
     ass_leads_rate= int(asistio/lead_ass_rate)
 
-    st.write(f'Your Campaign lead to assistant rate in the last batch was {lead_ass_rate*100}%. Recommendation: Always consider an improvement for this new cycle.')
+    st.write(f'Your Campaign lead to assistant rate in the last batch was {(lead_ass_rate*100):,.0f} %. Recommendation: Always consider an improvement for this new cycle.')
     st.write(f'With this assitants and your Campaign lead to assistant rate in the last batch, you will get around {ass_leads_rate:,} leads.')
 
     # now, let's find how many leads do we need 
@@ -105,7 +138,7 @@ def show_predict_page():
 
     leads_hb_rate= int(leads*lead_hb_rate)
 
-    st.write(f'Your Campaign lead to Hubspot lead rate in the last batch was {lead_hb_rate*100}%. Recommendation: Always consider an improvement for this new cycle.')
+    st.write(f'Your Campaign lead to Hubspot lead rate in the last batch was {(lead_hb_rate*100):,.0f} %. Recommendation: Always consider an improvement for this new cycle.')
     st.write(f'With this Campaign leads and your campaign lead to Hubspot lead rate in the last batch, you will get around {leads_hb_rate:,} Hubspot leads.')
 
     # how many leads we want to get in hubspot
@@ -115,7 +148,7 @@ def show_predict_page():
 
     exp_alumns= int(leads_hubspot*hb_cvr)
 
-    st.write(f'In the last batch, the conversion rate of Hubspot leads was {hb_cvr*100}%. Recommendation: Always consider an improvement for this new cycle.')
+    st.write(f'In the last batch, the conversion rate of Hubspot leads was {(hb_cvr*100):,.0f} %. Recommendation: Always consider an improvement for this new cycle.')
     st.write(f'With this Hubspot leads and your conversion rate in the last batch, you will get around {exp_alumns:,} new alumns.')
 
     #st.subheader(f'Which school are we advertising? (select one)')
@@ -197,6 +230,6 @@ def show_predict_page():
         st.write(f'You will get around {exp_alumns:,} new alumns')
         st.write(f'Your CAC would be around $ {pred_cac:,} MXN.')
         st.write(f'Your campaigns will get around {ass_leads_rate:,} paid leads')
-        st.write(f'We cab expect around {leads_hb_rate:,} Hubspot leads')
+        st.write(f'We can expect around {leads_hb_rate:,} Hubspot leads')
         st.write(f'Our assistants goal is: {asistio:,} assistants')
         st.write(f'The expected cost per assistant is: $ {exp_cpa[0]:,.2f} MXN')
