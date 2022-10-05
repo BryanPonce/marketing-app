@@ -150,6 +150,46 @@ def show_predict_page():
 
     st.write(f'In the last batch, the conversion rate of Hubspot leads was {(hb_cvr*100):,.0f} %. Recommendation: Always consider an improvement for this new cycle.')
     st.write(f'With this Hubspot leads and your conversion rate in the last batch, you will get around {exp_alumns:,} new alumns.')
+    
+    mes_cat = st.selectbox('Which month are we advertising? (select one)', 
+    ('January',
+     'February', 
+     'March', 
+     'April',
+     'May',
+     'June',
+     'July',
+     'August',
+     'September',
+     'October',
+     'November',
+     'December'
+    ))
+    if mes_cat == 'January':
+        mes_cat = 4
+    elif mes_cat == 'February':
+        mes_cat = 3
+    elif mes_cat == 'March':
+        mes_cat = 7
+    elif mes_cat == 'April':
+        mes_cat = 0
+    elif mes_cat == 'May':
+        mes_cat = 8
+    elif mes_cat == 'June':
+        mes_cat = 6
+    elif mes_cat == 'July':
+        mes_cat = 5
+    elif mes_cat == 'August':
+        mes_cat = 1
+    elif mes_cat == 'September':
+        mes_cat = 11
+    elif mes_cat == 'October':
+        mes_cat = 10
+    elif mes_cat == 'November':
+        mes_cat = 9
+    elif mes_cat == 'December':
+        mes_cat = 2    
+
 
     #st.subheader(f'Which school are we advertising? (select one)')
     #st.write(f'Selected School = 1 Not Selected = 0')
@@ -213,10 +253,11 @@ def show_predict_page():
         #              ]])
 
         # columns: 'leads','leads_hubspot','asistio',
-        # 'escuela_cat','plataforma_ad_cat'
+        # 'escuela_cat','plataforma_ad_cat','mes_cat'
 
         x = np.array([[asistio,leads,leads_hubspot, 
-                      escuela_cat, plataforma_ad_cat 
+                      escuela_cat, plataforma_ad_cat,
+                      mes_cat
                       ]])
 
         x = x.astype(int)
