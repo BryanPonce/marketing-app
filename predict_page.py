@@ -151,7 +151,7 @@ def show_predict_page():
     st.write(f'In the last batch, the conversion rate of Hubspot leads was {(hb_cvr*100):,.0f} %. Recommendation: Always consider an improvement for this new cycle.')
     st.write(f'With this Hubspot leads and your conversion rate in the last batch, you will get around {exp_alumns:,} new alumns.')
     
-    mes_cat = st.selectbox('Which month are we advertising? (select one)', 
+    mes_cat = st.selectbox('On which month are we advertising? (select one)', 
     ('January',
      'February', 
      'March', 
