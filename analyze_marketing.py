@@ -164,8 +164,8 @@ def show_analyze_marketing():
         st.subheader(f'Total Sales: $ {ventas_totales:,} MXN')
         st.subheader(f'Alumns: {ins_total:,}')
         st.subheader(f'CAC: $ {cac_total:,} MXN')
-        st.subheader(f'Hubspot CVR: {hs_cvr_total} %')
         st.subheader(f'Hubspot CPL: $ {hs_cpl_total} MXN')
+        st.subheader(f'Hubspot CVR: {hs_cvr_total} %')
         
     
     # separate kpi section from visualization area with markdown
