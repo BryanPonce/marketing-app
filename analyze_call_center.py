@@ -117,7 +117,7 @@ def show_analyze_call_center():
     st.title('Dashboard All In One: Call Center :bar_chart:')
     st.markdown('##')
     
-    st.write('Note: The date range of this data is from September 8, 2021 to September 21, 2022') 
+    st.write('Note: The date range of this data is from September 8, 2021 to September 28, 2022') 
 
     # create variables for streamlit kpi section --------------------------------------------------------------------------------------------
 
