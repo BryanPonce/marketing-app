@@ -1,6 +1,7 @@
 
-# **to display streamlit app use this command in 
-# your terminal: streamlit run app.py **
+# **to display streamlit app using your localhost 
+# use this command in your terminal: 
+# streamlit run app.py **
 
 import streamlit as st
 from about_page import show_about_page
