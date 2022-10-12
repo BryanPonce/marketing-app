@@ -16,6 +16,7 @@ def load_df():
     df =  pd.read_csv(url, encoding='ISO-8859-1')
 
     df.columns = df.columns.str.replace(' ', '_')
+    df['sesion']= df['sesion'].str.replace('-', ' ')
     
     df['batch']= df['batch'].astype(int)
     df['inicio_del_informe']= df['inicio_del_informe'].astype('datetime64[ns]')
@@ -412,9 +413,89 @@ def show_analyze_call_center():
         secondary_y=False
     )
 
-    st.write(alumn_vs_hour) 
+    st.write(alumn_vs_hour)
+    st.markdown('---')
 
-        # hide streamlit style---------------
+    # plot session assistance vs CVR ----------------------------------------------------------------
+
+    # create a pivot table for our session performance
+
+    st.subheader("This plot shows the the performance per session and its Conversion Rate.")
+    st.write('Tip: Filter shorter time periods and by school you are analyzing, otherwise, the plot will be hard to read.')
+    
+    values=['0']
+    ass_sess = df_select[df_select.sesion.isin(values) == False]
+    
+    ass_sess= pd.pivot_table(data=ass_sess, 
+                    index=['sesion'
+                          ],
+                    values=['asistio','inscrito'
+                           ],
+                    aggfunc={'asistio':np.sum,'inscrito':np.sum,
+                            },
+                    fill_value=0
+    )
+
+    ass_sess= ass_sess.reset_index()
+    
+    # new variables for measured metrics
+
+    ass_sess['ass_cvr']= round(ass_sess['inscrito']/ ass_sess['asistio'],2)
+
+    # now create the visualization ------------------------------ 
+
+    ass_cvr_rate = make_subplots(specs=[[{'secondary_y':True}]])
+
+    ass_cvr_rate.add_trace(
+        go.Scatter(
+            x= ass_sess['sesion'],
+            y= ass_sess['ass_cvr'],
+            name= 'Conversion Rate'),
+            secondary_y=True
+    )
+    ass_cvr_rate.add_trace(
+        go.Bar(
+            x= ass_sess['sesion'],
+            y= ass_sess['inscrito'],
+            name= 'Alumns'),
+            secondary_y= False
+    )
+    ass_cvr_rate.update_layout(
+        title='<b>Assistants vs Conversion Rate per Session</b>',
+        xaxis_title='Assistants',
+        yaxis_title='Alumns',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=(dict(showgrid=False)),
+    )
+    ass_cvr_rate.update_yaxes(
+        title_text='CVR',
+        secondary_y=True
+    )    
+    ass_cvr_rate.update_yaxes(
+        title_text='Assistants',
+        secondary_y=False
+    )
+    ass_cvr_rate.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y2', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=True
+    )
+    ass_cvr_rate.update_yaxes(
+        rangemode='tozero', 
+        scaleanchor='y', 
+        scaleratio=1, 
+        constraintoward='bottom', 
+        secondary_y=False
+    )
+
+    st.write(ass_cvr_rate)
+    st.markdown('---')
+
+    # ----------------------------------------------------------------------------------------------------------------------------
+
+    # hide streamlit style---------------
 
     hide_style= """
             <style>
