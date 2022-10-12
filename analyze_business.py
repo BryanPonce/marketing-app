@@ -358,8 +358,9 @@ def show_analyze_business():
     )
 
     st.write(fig_funnel)
+    st.markdown('---')
     
-        # hide streamlit style---------------
+    # hide streamlit style---------------
 
     hide_style= """
             <style>
