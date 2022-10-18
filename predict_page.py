@@ -255,18 +255,18 @@ def show_predict_page():
         # columns: 'leads','leads_hubspot','asistio',
         # 'escuela_cat','plataforma_ad_cat','mes_cat'
 
-        x = np.array([['leads','leads_hubspot','asistio',
+        #x = np.array([['leads','leads_hubspot','asistio',
                        'plataforma_ad_cat','escuela_cat',
                        'mes_cat'
                       ]])
 
-        #x = x.astype(int)
         
-        #x = pd.DataFrame(x, columns=['leads','leads_hubspot','asistio',
-        #                             'plataforma_ad_cat','escuela_cat',
-        #                             'mes_cat'
-        #                            ])
-     
+        x['leads']= x['leads'].astype(int)
+        x = pd.DataFrame(x, columns=['leads','leads_hubspot','asistio',
+                                     'plataforma_ad_cat','escuela_cat',
+                                     'mes_cat'
+                                     ])
+        x= x.to_numpy()
         
         investment_sugg = regressor.predict(x)
         exp_cpa= investment_sugg / asistio
