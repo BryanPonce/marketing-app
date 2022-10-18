@@ -285,3 +285,4 @@ def show_predict_page():
             """
 
     st.markdown(hide_style, unsafe_allow_html=True)
+    
