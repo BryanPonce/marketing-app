@@ -124,7 +124,7 @@ def show_predict_page():
     st.subheader(f'How many assistants do we need?')
     st.write(f'This is the number of assistants obtained in Batch {last_batch}: {assistants:,}')
 
-    asistio = st.slider("Assistants:", 100,600, step= 20)
+    asistio = st.slider("Assistants:",100,800, step= 20)
     
     ass_leads_rate= int(asistio/lead_ass_rate)
 
@@ -134,7 +134,7 @@ def show_predict_page():
     # now, let's find how many leads do we need 
     
     st.subheader(f'How many leads can we get?')
-    leads = st.slider("Leads:", 250,5000, step= 50)
+    leads = st.slider("Leads:",250,7000, step= 50)
 
     leads_hb_rate= int(leads*lead_hb_rate)
 
@@ -144,7 +144,7 @@ def show_predict_page():
     # how many leads we want to get in hubspot
 
     st.subheader(f'How many leads in Hubspot are we expecting?')
-    leads_hubspot = st.slider("Hubspot Leads:", 250,5000, step= 50)
+    leads_hubspot = st.slider("Hubspot Leads:",250,7000, step= 50)
 
     exp_alumns= int(leads_hubspot*hb_cvr)
 
@@ -166,29 +166,29 @@ def show_predict_page():
      'December'
     ))
     if mes_cat == 'January':
-        mes_cat = 4
+        mes_cat =4
     elif mes_cat == 'February':
-        mes_cat = 3
+        mes_cat =3
     elif mes_cat == 'March':
-        mes_cat = 7
+        mes_cat =7
     elif mes_cat == 'April':
-        mes_cat = 0
+        mes_cat =0
     elif mes_cat == 'May':
-        mes_cat = 8
+        mes_cat =8
     elif mes_cat == 'June':
-        mes_cat = 6
+        mes_cat =6
     elif mes_cat == 'July':
-        mes_cat = 5
+        mes_cat =5
     elif mes_cat == 'August':
-        mes_cat = 1
+        mes_cat =1
     elif mes_cat == 'September':
-        mes_cat = 11
+        mes_cat =11
     elif mes_cat == 'October':
-        mes_cat = 10
+        mes_cat =10
     elif mes_cat == 'November':
-        mes_cat = 9
+        mes_cat =9
     elif mes_cat == 'December':
-        mes_cat = 2    
+        mes_cat =2    
 
 
     #st.subheader(f'Which school are we advertising? (select one)')
@@ -206,9 +206,9 @@ def show_predict_page():
      'Marketing'
     ))
     if escuela_cat == 'Coding':
-        escuela_cat = 0
+        escuela_cat =0
     elif escuela_cat == 'Data':
-        escuela_cat = 1
+        escuela_cat =1
     elif escuela_cat == 'UX/UI':
         escuela_cat =4 
     elif escuela_cat == 'Marketing':
@@ -228,13 +228,13 @@ def show_predict_page():
      'Tik Tok'
     ))
     if plataforma_ad_cat == 'Facebook':
-        plataforma_ad_cat = 0
+        plataforma_ad_cat =0
     elif plataforma_ad_cat == 'Google':
-        plataforma_ad_cat = 1
+        plataforma_ad_cat =1
     elif plataforma_ad_cat == 'Linked In':
-        plataforma_ad_cat = 2 
+        plataforma_ad_cat =2 
     elif plataforma_ad_cat == 'Tik Tok':
-        plataforma_ad_cat = 3
+        plataforma_ad_cat =3
 
     ok = st.button("Calculate my investment suggestion")
     if ok:
@@ -265,8 +265,8 @@ def show_predict_page():
                                      'plataforma_ad_cat','escuela_cat',
                                      'mes_cat'
                                      ])
-        x['leads']= x['leads'].astype(int)
-        x= x.to_numpy()
+        
+        x = x.astype(int)
         
         investment_sugg = regressor.predict(x)
         exp_cpa= investment_sugg / asistio
