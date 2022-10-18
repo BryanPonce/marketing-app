@@ -255,7 +255,7 @@ def show_predict_page():
         # columns: 'leads','leads_hubspot','asistio',
         # 'escuela_cat','plataforma_ad_cat','mes_cat'
 
-        x = np.array([['leads_hubspot','asistio','leads',
+        x = np.array([['leads','leads_hubspot','asistio',
                        'plataforma_ad_cat','escuela_cat',
                        'mes_cat']])
         
