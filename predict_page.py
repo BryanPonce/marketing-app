@@ -256,9 +256,9 @@ def show_predict_page():
         # 'escuela_cat','plataforma_ad_cat','mes_cat'
 
         #x = np.array([['leads','leads_hubspot','asistio',
-                       'plataforma_ad_cat','escuela_cat',
-                       'mes_cat'
-                      ]])
+        #               'plataforma_ad_cat','escuela_cat',
+        #               'mes_cat'
+        #              ]])
 
         
         x['leads']= x['leads'].astype(int)
