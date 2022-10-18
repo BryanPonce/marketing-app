@@ -266,6 +266,7 @@ def show_predict_page():
                                      'plataforma_ad_cat','escuela_cat',
                                      'mes_cat'
                                     ])
+        x = x.astype(int)
         
         investment_sugg = regressor.predict(x)
         exp_cpa= investment_sugg / asistio
