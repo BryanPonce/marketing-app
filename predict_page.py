@@ -262,12 +262,17 @@ def show_predict_page():
         escuela_cat.astype(int)
         mes_cat.astype(int)
 
-        x = np.array([['leads','leads_hubspot','asistio',
-                       'plataforma_ad_cat','escuela_cat',
-                       'mes_cat'
-                      ]])
+        #x = np.array([['leads','leads_hubspot','asistio',
+        #               'plataforma_ad_cat','escuela_cat',
+        #               'mes_cat'
+        #              ]])
 
-        x = x.astype(int)
+        #x = x.astype(int)
+        
+        x = pd.DataFrame(x, columns=['leads','leads_hubspot','asistio',
+                                     'plataforma_ad_cat','escuela_cat',
+                                     'mes_cat'
+                                    ])
         
         investment_sugg = regressor.predict(x)
         exp_cpa= investment_sugg / asistio
