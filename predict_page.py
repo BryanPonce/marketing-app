@@ -254,6 +254,13 @@ def show_predict_page():
 
         # columns: 'leads','leads_hubspot','asistio',
         # 'escuela_cat','plataforma_ad_cat','mes_cat'
+        
+        leads.astype(int)
+        leads_hubspot.astype(int)
+        asistio.astype(int)
+        plataforma_ad_cat.astype(int)
+        escuela_cat.astype(int)
+        mes_cat.astype(int)
 
         x = np.array([['leads','leads_hubspot','asistio',
                        'plataforma_ad_cat','escuela_cat',
