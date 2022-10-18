@@ -260,12 +260,6 @@ def show_predict_page():
                        'mes_cat'
                       ]])
         
-
-        x = pd.DataFrame(x, columns=['leads','leads_hubspot','asistio',
-                                     'plataforma_ad_cat','escuela_cat',
-                                     'mes_cat'
-                                     ])
-        
         x = x.astype(int)
         
         investment_sugg = regressor.predict(x)
