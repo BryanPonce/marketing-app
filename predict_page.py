@@ -238,7 +238,7 @@ def show_predict_page():
 
     ok = st.button("Calculate my investment suggestion")
     if ok:
-
+        
         # columns: 'asistio','leads','leads_hubspot', 'school_is_coding', 
         #          'school_is_data','school_is_marketing', 'school_is_unknown', 
         #          'school_is_ux','platform_is_facebook_ads', 'platform_is_google_ads',
@@ -260,14 +260,13 @@ def show_predict_page():
                        'mes_cat'
                       ]])
 
-        #x = x.astype(int)
+        x = x.astype(int)
         
         #x = pd.DataFrame(x, columns=['leads','leads_hubspot','asistio',
         #                             'plataforma_ad_cat','escuela_cat',
         #                             'mes_cat'
         #                            ])
-        
-        x = x.astype(int)
+     
         
         investment_sugg = regressor.predict(x)
         exp_cpa= investment_sugg / asistio
