@@ -5,7 +5,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
-from PIL import Image
+#from PIL import Image
 
 # import trained model ------------------------------------------------
 
@@ -244,7 +244,7 @@ def show_predict_page():
         #          'school_is_ux','platform_is_facebook_ads', 'platform_is_google_ads',
         #          'platform_is_linkedin_ads', 'platform_is_tiktok_ads'
 
-        #x = np.array([[asistio,leads,leads_hubspot, 
+        #x = np.array([[leads,leads_hubspot, 
         #              school_is_coding, school_is_data, 
         #              school_is_marketing,school_is_unknown,
         #              school_is_ux,
@@ -257,10 +257,9 @@ def show_predict_page():
 
         x = np.array([['leads','leads_hubspot','asistio',
                        'plataforma_ad_cat','escuela_cat',
-                       'mes_cat'
-                      ]])
+                       'mes_cat']])
         
-        x = x.astype(int)
+        x = x.astype(float)
         
         investment_sugg = regressor.predict(x)
         exp_cpa= investment_sugg / asistio
