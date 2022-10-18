@@ -260,7 +260,7 @@ def show_predict_page():
                        'mes_cat'
                       ]])
 
-        #x = x.astype(int)
+        x = x.astype(int)
         
         investment_sugg = regressor.predict(x)
         exp_cpa= investment_sugg / asistio
