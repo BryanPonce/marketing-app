@@ -19,7 +19,7 @@ regressor = data["model"]
 
 def load_df():
 
-    url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_05_10.csv'
+    url= 'https://raw.githubusercontent.com/BryanPonce/marketing-app/main/dataset_mkt_12_10.csv'
     df =  pd.read_csv(url, encoding='ISO-8859-1')
 
     df.columns = df.columns.str.replace(' ', '_')
