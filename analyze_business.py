@@ -137,7 +137,7 @@ def show_analyze_business():
     st.title('Dashboard All In One: Business :bar_chart:')
     st.markdown('##')
     
-    st.write('Note: The date range of this data is from September 8th, 2021 to October 5th, 2022')
+    st.write('Note: The date range of this data is from September 8th, 2021 to October 12th, 2022')
 
     # create variables for streamlit kpi section
 
