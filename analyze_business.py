@@ -21,7 +21,7 @@ def load_df():
     df['inicio_del_informe']= df['inicio_del_informe'].astype('datetime64[ns]')
     df['nombre_del_conjunto_de_anuncios']= df['nombre_del_conjunto_de_anuncios'].astype(str)
     df['campaign_name']= df['campaign_name'].astype(str)
-    df['leads']= df['leads'].astype(int)
+    #df['leads']= df['leads'].astype(int)
     df['clics']= df['clics'].astype(int)
     df['impresiones']= df['impresiones'].astype(int)
     df['importe_gastado']= df['importe_gastado'].astype(float)
